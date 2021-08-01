@@ -7,6 +7,11 @@ var router = express.Router();
 
 router.get('/', productController.home);
 router.get('/register', productController.register);
-router.post('/test', productController.test);
+router.get('/test', productController.test);
+router.post('/save-product', productController.saveProduct);
+router.get('/get-product/:id?', productController.getProduct);
+router.get('/get-all-products', productController.getAllProducts);
+router.put('/update-product/:id', productController.updateProduct);
+router.delete('/remove-product/:id', productController.removeProduct);
 
 module.exports = router;
