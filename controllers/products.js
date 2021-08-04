@@ -4,9 +4,10 @@ var Product = require('../models/products');
 
 var controller = {
     home: function(req, res){
-        return res.status(200).send({
-            message: "Home de la aplicación web"
-        });
+        var contenidoJSON = {
+            window: "Create, View, Update and Delete products"
+        };
+        res.status(200).render('index', contenidoJSON);
     },
     register: function(req, res){
         return res.status(200).send({
