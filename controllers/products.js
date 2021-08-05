@@ -5,19 +5,17 @@ var Product = require('../models/products');
 var controller = {
     home: function(req, res){
         var contenidoJSON = {
-            window: "Create, View, Update and Delete products"
+            window: "Create, See, Update and Delete products",
+            home_button: "d-none"
         };
         res.status(200).render('index', contenidoJSON);
     },
-    register: function(req, res){
-        return res.status(200).send({
-            message: "Estamos en la ventana de registro"
-        });
-    },
-    test: function(req, res){
-        return res.status(200).send({
-            message: "Test de la aplicación web"
-        });
+    createProduct: function(req, res){
+        var contenidoJSON = {
+            window: "Create a product",
+            home_button: "d-block"
+        };
+        res.status(200).render('create-product', contenidoJSON);
     },
     saveProduct: function(req, res){
         // CREANDO EL PRODUCTO Y ASIGNANDO VALORES

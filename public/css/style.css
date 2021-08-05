@@ -7,13 +7,15 @@ body {
 header {
     border-bottom: solid 3px rgba(255, 255, 255, 0.5);
 }
+header .badge {
+    background-color: #000;
+}
 .btn-main {
     font-size: 20px;
     text-transform: uppercase;
     font-weight: bold;
 }
 .container-main {
-    background-color: #343a40;
     border-radius: 5px;
     border: solid 3px rgba(255, 255, 255, 0.5);
 }
