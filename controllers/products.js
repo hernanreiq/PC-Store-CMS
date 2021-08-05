@@ -21,10 +21,10 @@ var controller = {
         // CREANDO EL PRODUCTO Y ASIGNANDO VALORES
         var product = new Product();
         var params = req.body;
-        product.name = params.name;
-        product.brand = params.brand;
-        product.year = params.year;
-        product.description = params.description;
+        product.name = params.name_product;
+        product.brand = params.brand_product;
+        product.year = params.year_product;
+        product.description = params.description_product;
         product.image = null;
 
         //GUARDANDO EL PRODUCTO EN LA BASE DE DATOS

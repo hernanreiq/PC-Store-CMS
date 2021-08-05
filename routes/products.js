@@ -7,7 +7,7 @@ var router = express.Router();
 
 router.get('/', productController.home);
 router.get('/create-product', productController.createProduct);
-router.post('/save-product', productController.saveProduct);
+router.post('/create-product', productController.saveProduct);
 router.get('/get-product/:id?', productController.getProduct);
 router.get('/get-all-products', productController.getAllProducts);
 router.put('/update-product/:id', productController.updateProduct);
