@@ -19,3 +19,9 @@ header .badge {
     border-radius: 5px;
     border: solid 3px rgba(255, 255, 255, 0.5);
 }
+div.feedback {
+    max-width: 400px;
+}
+i.feedback {
+    font-size: 200px;
+}

@@ -1,20 +1,18 @@
 'use strict'
 
 var Product = require('../models/products');
-
+var contenidoJSON = {};
 var controller = {
     home: function(req, res){
-        var contenidoJSON = {
-            window: "Create, See, Update and Delete products",
-            home_button: "d-none"
-        };
+        //CONFIGURANDO LA INFORMACION DE ESTA PANTALLA
+        contenidoJSON.window = "Create, See, Update and Delete products";
+        contenidoJSON.home_button = "d-none";
         res.status(200).render('index', contenidoJSON);
     },
     createProduct: function(req, res){
-        var contenidoJSON = {
-            window: "Create a product",
-            home_button: "d-block"
-        };
+        //CONFIGURANDO LA INFORMACION DE ESTA PANTALLA
+        contenidoJSON.window = "Create a product";
+        contenidoJSON.home_button = "d-block";
         res.status(200).render('create-product', contenidoJSON);
     },
     saveProduct: function(req, res){
@@ -29,9 +27,17 @@ var controller = {
 
         //GUARDANDO EL PRODUCTO EN LA BASE DE DATOS
         product.save((err, productStored) => {
-            if(err) return res.status(500).send({message: "Hubo un error al guardar el producto"});
-            if(!productStored) return res.status(404).send({message: "No se ha podido guardar el producto"});
-            return res.status(200).send({product: productStored});
+            if(err){
+                contenidoJSON.type_feedback = "fa-exclamation-circle text-danger";
+                contenidoJSON.message = "500 - Error creating product";
+            } else if(!productStored){
+                contenidoJSON.type_feedback = "fa-exclamation-circle text-info";
+                contenidoJSON.message = "404 - Product could not be created";
+            } else if(res.status(200)){
+                contenidoJSON.type_feedback = "fa-check-circle text-success";
+                contenidoJSON.message = "Successfully created product!";
+            }
+            res.redirect('/feedback');
         });
     },
     getProduct: function(req, res){
@@ -41,7 +47,6 @@ var controller = {
         //COMPROBAR QUE EL ID SE HAYA ENVIADO POR GET
         if(productId == null) return res.status(404).send({message: "El producto no existe"});
         
-
         //BUSCANDO EL PRODUCTO EN LA BASE DE DATOS
         Product.findById(productId, (err, product) => {
             if(err) return res.status(500).send({message: "Hubo un error al buscar el producto"});
@@ -76,6 +81,17 @@ var controller = {
             if(!productRemoved) return res.status(404).send({message: "El producto no existe"});
             return res.status(200).send({product: productRemoved});
         });
+    },
+    feedback: function(req, res){
+        contenidoJSON.window = "Feedback";
+        contenidoJSON.home_button = "d-block";
+        if(contenidoJSON.type_feedback == "" || contenidoJSON == ""){
+            contenidoJSON.type_feedback = "fa-exclamation-circle text-info";
+            contenidoJSON.message = "There is nothing to show";
+        }
+        res.status(200).render('feedback', contenidoJSON);
+        contenidoJSON.type_feedback = "";
+        contenidoJSON.message = "";
     }
 };
 
