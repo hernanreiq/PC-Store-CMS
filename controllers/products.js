@@ -40,6 +40,28 @@ var controller = {
             res.redirect('/feedback');
         });
     },
+    getAllProducts: function(req, res){
+        contenidoJSON.window = "See all products";
+        contenidoJSON.home_button = "d-block";
+        //BUSCANDO TODOS LOS PRODUCTOS EN LA BASE DE DATOS
+        Product.find({}).sort({year: 1}).exec((err, products) => {
+            if(err){
+                contenidoJSON.type_feedback = "fa-exclamation-circle text-danger";
+                contenidoJSON.message = "500 - There was an error searching for the products";
+                res.redirect('/feedback');
+            } else if(!products){
+                contenidoJSON.type_feedback = "fa-exclamation-circle text-info";
+                contenidoJSON.message = "404 - There are no products";
+                res.redirect('/feedback');
+            } else if(res.status(200)){
+                contenidoJSON.type_feedback = "fa-check-circle text-success";
+                contenidoJSON.message = "Successfully created product!";
+                contenidoJSON.products = products;
+                contenidoJSON.products_length = products.length;
+                res.render('get-all-products', contenidoJSON);
+            }
+        });
+    },
     getProduct: function(req, res){
         //OBTENER EL ID PARA HACER LA BÚSQUEDA
         var productId = req.params.id;
@@ -52,14 +74,6 @@ var controller = {
             if(err) return res.status(500).send({message: "Hubo un error al buscar el producto"});
             if(!product) return res.status(404).send({message: "El producto no existe"});
             return res.status(200).send({product});
-        });
-    },
-    getAllProducts: function(req, res){
-        //BUSCANDO TODOS LOS PRODUCTOS EN LA BASE DE DATOS
-        Product.find({}).sort({year: 1}).exec((err, products) => {
-            if(err) return res.status(500).send({message: "Hubo un error al buscar los productos"});
-            if(!products) return res.status(404).send({message: "No hay productos"});
-            return res.status(200).send({products});
         });
     },
     updateProduct: function(req, res){
