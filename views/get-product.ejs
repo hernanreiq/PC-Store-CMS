@@ -1,0 +1,18 @@
+<%- include ('partials/head.html') %>
+<%- include ('partials/header.html') %>
+<main class="text-white">
+    <div class="container my-5 container-main p-3 bg-dark">
+        <div class="row">
+            <div class="col-md-6 my-2">
+                <img src="/img/<%- currentProduct.name %>" alt="<%- currentProduct.name + ' ' + currentProduct.brand + ' ' + currentProduct.year %>">
+            </div>
+            <div class="col-md-6 my-2">
+                <h2><b class="text-warning">Name:</b> <%- currentProduct.name %></h2>
+                <h2><b class="text-warning">Brand:</b> <%- currentProduct.brand %></h2>
+                <h2><b class="text-warning">Year:</b> <%- currentProduct.year %></h2>
+                <h2><b class="text-warning">Description:</b> <%- currentProduct.description %></h2>
+            </div>
+        </div>
+    </div>
+</main>
+<%- include ('partials/final-part.html') %>
