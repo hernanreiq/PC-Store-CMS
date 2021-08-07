@@ -54,11 +54,28 @@ var controller = {
                 contenidoJSON.message = "404 - There are no products";
                 res.redirect('/feedback');
             } else if(res.status(200)){
-                contenidoJSON.type_feedback = "fa-check-circle text-success";
-                contenidoJSON.message = "Successfully created product!";
                 contenidoJSON.products = products;
                 contenidoJSON.products_length = products.length;
                 res.render('get-all-products', contenidoJSON);
+            }
+        });
+    },
+    removeProduct: function(req, res){
+        var productId = req.params.id;
+        //BUSCAR POR ID Y ELIMINAR EL PRODUCTO
+        Product.findByIdAndRemove(productId, (err, productRemoved) => {
+            if(err){
+                contenidoJSON.type_feedback = "fa-exclamation-circle text-danger";
+                contenidoJSON.message = "500 - There was an error removing the product";
+                res.redirect('/feedback');
+            } else if(!productRemoved){
+                contenidoJSON.type_feedback = "fa-exclamation-circle text-info";
+                contenidoJSON.message = "404 - Product does not exist";
+                res.redirect('/feedback');
+            } else if(res.status(200)){
+                contenidoJSON.type_feedback = "fa-check-circle text-success";
+                contenidoJSON.message = "Product deleted successfully!";
+                res.redirect('/feedback');
             }
         });
     },
@@ -85,15 +102,6 @@ var controller = {
             if(err) return res.status(500).send({message: "Hubo un error al actualizar el producto"});
             if(!productUpdated) return res.status(404).send({message: "El producto no existe"});
             return res.status(200).send({product: productUpdated});
-        });
-    },
-    removeProduct: function(req, res){
-        var productId = req.params.id;
-        //BUSCAR POR ID Y ELIMINAR EL PRODUCTO
-        Product.findByIdAndRemove(productId, (err, productRemoved) => {
-            if(err) return res.status(500).send({message: "Hubo un error al eliminar el producto"});
-            if(!productRemoved) return res.status(404).send({message: "El producto no existe"});
-            return res.status(200).send({product: productRemoved});
         });
     },
     feedback: function(req, res){

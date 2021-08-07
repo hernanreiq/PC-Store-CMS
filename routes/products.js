@@ -11,7 +11,7 @@ router.post('/create-product', productController.saveProduct);
 router.get('/get-all-products', productController.getAllProducts);
 router.get('/get-product/:id?', productController.getProduct);
 router.put('/update-product/:id', productController.updateProduct);
-router.delete('/remove-product/:id', productController.removeProduct);
+router.get('/remove-product/:id', productController.removeProduct);
 router.get('/feedback', productController.feedback);
 
 module.exports = router;
