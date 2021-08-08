@@ -8,7 +8,7 @@ var router = express.Router();
 //MIDDLEWARE
 var multiparty = require('connect-multiparty');
 //RUTA DONDE SE GUARDARÁN LAS IMAGENES
-var multipartyMiddleware = multiparty({uploadDir: "./uploads"});
+var multipartyMiddleware = multiparty({uploadDir: "./public/img/products"});
 
 router.get('/', productController.home);
 router.get('/create-product', productController.createProduct);     //PANTALLA

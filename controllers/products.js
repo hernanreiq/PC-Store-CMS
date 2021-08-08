@@ -1,6 +1,7 @@
 'use strict'
 
 var Product = require('../models/products');
+var fs = require('fs'); // LIBRERIA PARA BORRAR ARCHIVOS
 var contenidoJSON = {};
 var controller = {
     home: function(req, res){
@@ -135,15 +136,27 @@ var controller = {
         var productId = req.params.id;
         var file_name = "Image not uploaded";
         if(req.files){
+            //BLOQUE DE CODIGO PARA OBTENER EL NOMBRE DEL ARCHIVO
             var filePath = req.files.image.path;
             var fileSplit = filePath.split('\\');
-            var fileName = fileSplit[1];
+            var fileName = fileSplit[3];
+            //BLOQUE DE CODIGO PARA OBTENER LA EXTENSION
+            var extSplit = fileName.split('\.');
+            var fileExt = extSplit[1];
 
-            Product.findByIdAndUpdate(productId, {image: fileName}, {new: true}, (err, productUpdated) => {
-                if(err) return res.status(500).send({message: "Hubo un error al subir la imagen"});
-                if(!productUpdated) return res.status(404).send({message: "Ese ID no existe"});
-                return res.status(200).send({product: productUpdated});
-            })
+            //SI ES UNA EXTENSIÓN DE ARCHIVO PERMITIDA ENTONCES SE GUARDARÁ
+            if(fileExt == 'png' || fileExt == 'jpg' || fileExt == 'jpeg' || fileExt == 'gif'){
+                Product.findByIdAndUpdate(productId, {image: fileName}, {new: true}, (err, productUpdated) => {
+                    if(err) return res.status(500).send({message: "Hubo un error al subir la imagen"});
+                    if(!productUpdated) return res.status(404).send({message: "Ese ID no existe"});
+                    return res.status(200).send({product: productUpdated});
+                })
+            } else { // SI NO ES PERMITIDA ENTONCES SE BORRARÁ ESE ARCHIVO
+                fs.unlink(filePath, (err) => {
+                    return res.status(200).send({message: "La extensión no es válida"});
+                });
+            }
+
 
         } else {
             return res.status(200).send({message: file_name});
