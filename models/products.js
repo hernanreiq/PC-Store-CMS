@@ -8,6 +8,7 @@ var ProductSchema = Schema({
     brand: String,
     year: Number,
     description: String,
+    quantity: Number,
     image: String
 });
 

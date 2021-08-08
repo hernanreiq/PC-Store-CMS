@@ -8,8 +8,8 @@
               <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Brand</th>
-                <th scope="col">year</th>
-                <th scope="col">Description</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Image</th>
                 <th scope="col">See</th>
                 <th scope="col">Update</th>
                 <th scope="col">Delete</th>
@@ -20,8 +20,8 @@
               <tr>
                 <td><%- products[i].name %></td>
                 <td><%- products[i].brand %></td>
-                <td><%- products[i].year %></td>
-                <td><%- products[i].description %></td>
+                <td><%- products[i].quantity %></td>
+                <td><%- products[i].image == null ? "No" : "Yes" %></td>
                 <td><a href="/get-product/<%- products[i]._id %>" class="btn btn-main w-100 btn-info"><i class="fas fa-eye"></i></a></td>
                 <td><a href="/" class="btn btn-main w-100 btn-primary"><i class="fas fa-edit"></i></a></td>
                 <td><a href="/remove-product/<%- products[i]._id %>" class="btn btn-main w-100 btn-danger"><i class="far fa-trash-alt"></i></a></td>

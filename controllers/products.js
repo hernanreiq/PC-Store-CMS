@@ -1,6 +1,7 @@
 'use strict'
 
 var Product = require('../models/products');
+var path = require('path');
 var fs = require('fs'); // LIBRERIA PARA BORRAR ARCHIVOS
 var contenidoJSON = {};
 var controller = {
@@ -24,6 +25,7 @@ var controller = {
         product.brand = params.brand_product;
         product.year = params.year_product;
         product.description = params.description_product;
+        product.quantity = params.quantity_product;
         product.image = null;
 
         //GUARDANDO EL PRODUCTO EN LA BASE DE DATOS
@@ -133,9 +135,10 @@ var controller = {
         contenidoJSON.message = "";
     },
     uploadImage: function(req, res){
-        var productId = req.params.id;
-        var file_name = "Image not uploaded";
-        if(req.files){
+        contenidoJSON.window = "Product details";
+        contenidoJSON.home_button = "d-block";
+		var productId = req.params.id;
+		if(req.files){
             //BLOQUE DE CODIGO PARA OBTENER EL NOMBRE DEL ARCHIVO
             var filePath = req.files.image.path;
             var fileSplit = filePath.split('\\');
@@ -147,21 +150,32 @@ var controller = {
             //SI ES UNA EXTENSIÓN DE ARCHIVO PERMITIDA ENTONCES SE GUARDARÁ
             if(fileExt == 'png' || fileExt == 'jpg' || fileExt == 'jpeg' || fileExt == 'gif'){
                 Product.findByIdAndUpdate(productId, {image: fileName}, {new: true}, (err, productUpdated) => {
-                    if(err) return res.status(500).send({message: "Hubo un error al subir la imagen"});
-                    if(!productUpdated) return res.status(404).send({message: "Ese ID no existe"});
-                    return res.status(200).send({product: productUpdated});
-                })
+                    if(err){
+                        contenidoJSON.type_feedback = "fa-exclamation-circle text-danger";
+                        contenidoJSON.message = "500 - There was an error uploading the image";
+                        res.redirect('/feedback');
+                    } else if(!productUpdated){
+                        contenidoJSON.type_feedback = "fa-exclamation-circle text-info";
+                        contenidoJSON.message = "404 - Product does not exist";
+                        res.redirect('/feedback');
+                    } else if(res.status(200)){
+                        contenidoJSON.currentProduct = productUpdated;
+                        res.render('get-product', contenidoJSON);
+                    }
+                });
             } else { // SI NO ES PERMITIDA ENTONCES SE BORRARÁ ESE ARCHIVO
                 fs.unlink(filePath, (err) => {
-                    return res.status(200).send({message: "La extensión no es válida"});
+                    contenidoJSON.type_feedback = "fa-exclamation-circle text-danger";
+                    contenidoJSON.message = "500 - That type of files is not valid";
+                    res.redirect('/feedback');
                 });
             }
-
-
         } else {
-            return res.status(200).send({message: file_name});
+            contenidoJSON.type_feedback = "fa-exclamation-circle text-danger";
+            contenidoJSON.message = "500 - Image not uploaded";
+            res.redirect('/feedback');
         }
-    }
+	}
 };
 
 module.exports = controller;

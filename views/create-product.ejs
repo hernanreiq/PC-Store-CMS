@@ -8,35 +8,35 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text font-weight-bold" id="name-product">Name</span>
                 </div>
-                <input required name="name_product" type="text" class="form-control" placeholder="Desktop" aria-label="Desktop" aria-describedby="name-product">
+                <input required name="name_product" id="name_product" type="text" class="form-control" placeholder="Desktop" aria-label="Desktop" aria-describedby="name-product">
             </div>
             <div class="input-group my-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text font-weight-bold" id="brand-product">Brand</span>
                 </div>
-                <input required name="brand_product" type="text" class="form-control" placeholder="Dell Optiplex" aria-label="Dell Optiplex" aria-describedby="brand-product">
+                <input required name="brand_product" id="brand_product" type="text" class="form-control" placeholder="Dell Optiplex" aria-label="Dell Optiplex" aria-describedby="brand-product">
             </div>
             <div class="input-group my-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text font-weight-bold" id="year-product">Year</span>
                 </div>
-                <input required name="year_product" type="number" class="form-control" placeholder="2016" aria-label="2016" aria-describedby="year-product">
+                <input required name="year_product" id="year_product" type="number" class="form-control" placeholder="2016" aria-label="2016" aria-describedby="year-product">
             </div>
             <div class="input-group my-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text font-weight-bold" id="description-product">Description</span>
                 </div>
-                <input required name="description_product" type="text" class="form-control" placeholder="i5-6500 8GB DDR4" aria-label="i5-6500 8GB DDR4" aria-describedby="description-product">
+                <input required name="description_product" id="description_product" type="text" class="form-control" placeholder="i5-6500 8GB DDR4" aria-label="i5-6500 8GB DDR4" aria-describedby="description-product">
             </div>
             <div class="input-group my-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text font-weight-bold" id="image-product">Image</span>
+                    <span class="input-group-text font-weight-bold" id="quantity-product">Quantity</span>
                 </div>
-                <input  name="image_product" type="file" class="form-control" placeholder="Image" aria-label="Image" aria-describedby="image-product" accept="image/png, .jpeg, .jpg, image/gif">
+                <input required name="quantity_product" id="quantity_product" type="number" class="form-control" placeholder="12" aria-label="i5-6500 8GB DDR4" aria-describedby="quantity-product">
             </div>
             <div class="row">
                 <div class="col-md-6 my-2">
-                    <button class="btn btn-danger btn-main w-100">Clean fields <i class="far fa-trash-alt"></i></button>
+                    <button class="btn btn-danger btn-main w-100" id="btn_clean_fields">Clean fields <i class="far fa-trash-alt"></i></button>
                 </div>
                 <div class="col-md-6 my-2">
                     <button type="submit" class="btn btn-success btn-main w-100">Create this product <i class="fas fa-plus-circle"></i></button>
@@ -45,4 +45,5 @@
         </form>
     </div>
 </main>
+<script src="/js/clean-fields.js"></script>
 <%- include ('partials/final-part.html') %>
