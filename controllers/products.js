@@ -130,6 +130,24 @@ var controller = {
         res.status(200).render('feedback', contenidoJSON);
         contenidoJSON.type_feedback = "";
         contenidoJSON.message = "";
+    },
+    uploadImage: function(req, res){
+        var productId = req.params.id;
+        var file_name = "Image not uploaded";
+        if(req.files){
+            var filePath = req.files.image.path;
+            var fileSplit = filePath.split('\\');
+            var fileName = fileSplit[1];
+
+            Product.findByIdAndUpdate(productId, {image: fileName}, {new: true}, (err, productUpdated) => {
+                if(err) return res.status(500).send({message: "Hubo un error al subir la imagen"});
+                if(!productUpdated) return res.status(404).send({message: "Ese ID no existe"});
+                return res.status(200).send({product: productUpdated});
+            })
+
+        } else {
+            return res.status(200).send({message: file_name});
+        }
     }
 };
 
