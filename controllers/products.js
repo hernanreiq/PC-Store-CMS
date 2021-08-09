@@ -6,7 +6,7 @@ var contenidoJSON = {};
 var controller = {
     home: function(req, res){
         //CONFIGURANDO LA INFORMACION DE ESTA PANTALLA
-        contenidoJSON.window = "Create, See, Update and Delete products";
+        contenidoJSON.window = "Create and see all the products";
         contenidoJSON.home_button = "d-none";
         res.status(200).render('index', contenidoJSON);
     },
@@ -43,7 +43,7 @@ var controller = {
         });
     },
     getAllProducts: function(req, res){
-        contenidoJSON.window = "See all products";
+        contenidoJSON.window = "See, update or remove a product";
         contenidoJSON.home_button = "d-block";
         //BUSCANDO TODOS LOS PRODUCTOS EN LA BASE DE DATOS
         Product.find({}).sort({year: 1}).exec((err, products) => {
