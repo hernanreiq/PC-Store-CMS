@@ -5,7 +5,13 @@
         <div class="row">
             <div class="col-md-6 my-2">
                 <% if(currentProduct.image != null){%>
-                <img class="w-100" src="/img/products/<%- currentProduct.image %>" alt="<%- currentProduct.name + ' ' + currentProduct.brand + ' ' + currentProduct.year %>">
+                <figure class="imghvr-hinge-right">
+                    <img class="w-100" src="/img/products/<%- currentProduct.image %>" alt="<%- currentProduct.name + ' ' + currentProduct.brand + ' ' + currentProduct.year %>">
+                    <figcaption class="bg-secondary">
+                        <h2>Copyright</h2>
+                        <p>This image is the property of Amazon</p>
+                    </figcaption>
+                </figure>       
                 <% } else { %>
                 <form action="/upload-image/<%- currentProduct._id %>" method="POST" enctype="multipart/form-data">  
                 <h2>Add an image</h2>
