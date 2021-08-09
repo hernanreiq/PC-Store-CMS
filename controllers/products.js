@@ -200,18 +200,30 @@ var controller = {
 
             //SI ES UNA EXTENSIÓN DE ARCHIVO PERMITIDA ENTONCES SE GUARDARÁ
             if(fileExt == 'png' || fileExt == 'jpg' || fileExt == 'jpeg' || fileExt == 'gif'){
-                Product.findByIdAndUpdate(productId, {image: fileName}, {new: true}, (err, productUpdated) => {
-                    if(err){
-                        contenidoJSON.type_feedback = "fa-exclamation-circle text-danger";
-                        contenidoJSON.message = "500 - There was an error uploading the image";
-                        res.redirect('/feedback');
-                    } else if(!productUpdated){
-                        contenidoJSON.type_feedback = "fa-exclamation-circle text-info";
-                        contenidoJSON.message = "404 - Product does not exist";
-                        res.redirect('/feedback');
-                    } else if(res.status(200)){
-                        contenidoJSON.currentProduct = productUpdated;
-                        res.render('get-product', contenidoJSON);
+                //BUSCAR EL PRODUCTO PARA BORRARLE LA FOTO VIEJA
+                Product.findById(productId, (err, product) => {
+                    if(res.status(200)){
+                        //SI EL PRODUCTO EXISTE ENTONCES SE LE BORRA LA FOTO VIEJA
+                        var oldFilePath = './public/img/products/' + product.image; 
+                        fs.stat(oldFilePath, (err, stat) => {
+                            if(err, stat){
+                                fs.unlink(oldFilePath, (err) => {});
+                            }
+                            Product.findByIdAndUpdate(productId, {image: fileName}, {new: true}, (err, productUpdated) => {
+                                if(err){
+                                    contenidoJSON.type_feedback = "fa-exclamation-circle text-danger";
+                                    contenidoJSON.message = "500 - There was an error uploading the image";
+                                    res.redirect('/feedback');
+                                } else if(!productUpdated){
+                                    contenidoJSON.type_feedback = "fa-exclamation-circle text-info";
+                                    contenidoJSON.message = "404 - Product does not exist";
+                                    res.redirect('/feedback');
+                                } else if(res.status(200)){
+                                    contenidoJSON.currentProduct = productUpdated;
+                                    res.render('get-product', contenidoJSON);
+                                }
+                            });
+                        });
                     }
                 });
             } else { // SI NO ES PERMITIDA ENTONCES SE BORRARÁ ESE ARCHIVO
