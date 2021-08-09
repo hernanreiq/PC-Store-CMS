@@ -1,7 +1,6 @@
 'use strict'
 
 var Product = require('../models/products');
-var path = require('path');
 var fs = require('fs'); // LIBRERIA PARA BORRAR ARCHIVOS
 var contenidoJSON = {};
 var controller = {
@@ -65,17 +64,34 @@ var controller = {
     },
     removeProduct: function(req, res){
         var productId = req.params.id;
-        //BUSCAR POR ID Y ELIMINAR EL PRODUCTO
-        Product.findByIdAndRemove(productId, (err, productRemoved) => {
+
+        //BUSCAR EL PRODUCTO PARA BORRARLE LA FOTO
+        Product.findById(productId, (err, product) => {
             if(err){
                 contenidoJSON.type_feedback = "fa-exclamation-circle text-danger";
-                contenidoJSON.message = "500 - There was an error removing the product";
-            } else if(!productRemoved){
+                contenidoJSON.message = "500 - There was an error searching for the product";
+                res.redirect('/feedback');
+            } else if(!product){
                 contenidoJSON.type_feedback = "fa-exclamation-circle text-info";
                 contenidoJSON.message = "404 - Product does not exist";
             } else if(res.status(200)){
-                contenidoJSON.type_feedback = "fa-check-circle text-success";
-                contenidoJSON.message = "Product deleted successfully!";
+                //SI EL PRODUCTO EXISTE ENTONCES SE LE BORRA LA FOTO
+                var filePath = './public/img/products/' + product.image; 
+                fs.unlink(filePath, (err) => {                    
+                    //BUSCAR POR ID Y ELIMINAR EL PRODUCTO
+                    Product.findByIdAndRemove(productId, (err, productRemoved) => {
+                        if(err){
+                            contenidoJSON.type_feedback = "fa-exclamation-circle text-danger";
+                            contenidoJSON.message = "500 - There was an error removing the product";
+                        } else if(!productRemoved){
+                            contenidoJSON.type_feedback = "fa-exclamation-circle text-info";
+                            contenidoJSON.message = "404 - Product does not exist";
+                        } else if(res.status(200)){
+                            contenidoJSON.type_feedback = "fa-check-circle text-success";
+                            contenidoJSON.message = "Product deleted successfully!";
+                        }
+                    });
+                });
             }
             res.redirect('/feedback');
         });
