@@ -70,16 +70,14 @@ var controller = {
             if(err){
                 contenidoJSON.type_feedback = "fa-exclamation-circle text-danger";
                 contenidoJSON.message = "500 - There was an error removing the product";
-                res.redirect('/feedback');
             } else if(!productRemoved){
                 contenidoJSON.type_feedback = "fa-exclamation-circle text-info";
                 contenidoJSON.message = "404 - Product does not exist";
-                res.redirect('/feedback');
             } else if(res.status(200)){
                 contenidoJSON.type_feedback = "fa-check-circle text-success";
                 contenidoJSON.message = "Product deleted successfully!";
-                res.redirect('/feedback');
             }
+            res.redirect('/feedback');
         });
     },
     getProduct: function(req, res){
@@ -112,15 +110,52 @@ var controller = {
         }
         
     },
+    productUpdater: function(req, res){
+        contenidoJSON.window = "Product updater";
+        contenidoJSON.home_button = "d-block";
+        //OBTENER EL ID PARA HACER LA BÚSQUEDA
+        var productId = req.params.id;
+
+        //COMPROBAR QUE EL ID SE HAYA ENVIADO POR GET
+        if(productId != null) {            
+            //BUSCANDO EL PRODUCTO EN LA BASE DE DATOS
+            Product.findById(productId, (err, product) => {
+                if(err){
+                    contenidoJSON.type_feedback = "fa-exclamation-circle text-danger";
+                    contenidoJSON.message = "500 - There was an error searching for the product";
+                    res.redirect('/feedback');
+                } else if(!product){
+                    contenidoJSON.type_feedback = "fa-exclamation-circle text-info";
+                    contenidoJSON.message = "404 - Product does not exist";
+                    res.redirect('/feedback');
+                } else if(res.status(200)){
+                    contenidoJSON.currentProduct = product;
+                    res.render('product-updater', contenidoJSON);
+                }
+            });
+        } else {
+            contenidoJSON.type_feedback = "fa-exclamation-circle text-info";
+            contenidoJSON.message = "404 - Product does not exist";
+            res.redirect('/feedback');
+        }
+    },
     updateProduct: function(req, res){
         //OBTENEMOS EL ID Y LOS DATOS PASADOS POR POST
         var productId = req.params.id;
         var update = req.body;
         //BUSCAR POR ID Y ACTUALIZAR
         Product.findByIdAndUpdate(productId, update, {new:true}, (err, productUpdated) => {
-            if(err) return res.status(500).send({message: "Hubo un error al actualizar el producto"});
-            if(!productUpdated) return res.status(404).send({message: "El producto no existe"});
-            return res.status(200).send({product: productUpdated});
+            if(err){
+                contenidoJSON.type_feedback = "fa-exclamation-circle text-danger";
+                contenidoJSON.message = "500 - There was an error updating the product";
+            } else if(!productUpdated){
+                contenidoJSON.type_feedback = "fa-exclamation-circle text-info";
+                contenidoJSON.message = "404 - Product does not exist";
+            } else if(res.status(200)){
+                contenidoJSON.type_feedback = "fa-check-circle text-success";
+                contenidoJSON.message = "Product updated successfully!";
+            }
+            res.redirect('/feedback');
         });
     },
     feedback: function(req, res){

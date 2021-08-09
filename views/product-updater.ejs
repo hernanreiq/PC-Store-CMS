@@ -1,0 +1,49 @@
+<%- include ('partials/head.html') %>
+<%- include ('partials/header.html') %>
+<main class="text-white">
+    <div class="container my-5 container-main p-3 bg-dark">
+        <form action="/update-product/<%- currentProduct._id %>" method="POST" class="p-3">
+            <h2>Update this product</h2>
+            <div class="input-group my-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text font-weight-bold" id="name-product">Name</span>
+                </div>
+                <input value="<%- currentProduct.name %>" required name="name" id="name_product" type="text" class="form-control" placeholder="Desktop" aria-label="Desktop" aria-describedby="name-product">
+            </div>
+            <div class="input-group my-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text font-weight-bold" id="brand-product">Brand</span>
+                </div>
+                <input value="<%- currentProduct.brand %>" required name="brand" id="brand_product" type="text" class="form-control" placeholder="Dell Optiplex" aria-label="Dell Optiplex" aria-describedby="brand-product">
+            </div>
+            <div class="input-group my-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text font-weight-bold" id="year-product">Year</span>
+                </div>
+                <input value="<%- currentProduct.year %>" required name="year" id="year_product" type="number" class="form-control" placeholder="2016" aria-label="2016" aria-describedby="year-product">
+            </div>
+            <div class="input-group my-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text font-weight-bold" id="description-product">Description</span>
+                </div>
+                <input value="<%- currentProduct.description %>" required name="description" id="description_product" type="text" class="form-control" placeholder="i5-6500 8GB DDR4" aria-label="i5-6500 8GB DDR4" aria-describedby="description-product">
+            </div>
+            <div class="input-group my-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text font-weight-bold" id="quantity-product">Quantity</span>
+                </div>
+                <input value="<%- currentProduct.quantity %>" required name="quantity" id="quantity_product" type="number" class="form-control" placeholder="12" aria-label="i5-6500 8GB DDR4" aria-describedby="quantity-product">
+            </div>
+            <div class="row">
+                <div class="col-md-6 my-2">
+                    <button class="btn btn-danger btn-main w-100" id="btn_clean_fields">Clean fields <i class="far fa-trash-alt"></i></button>
+                </div>
+                <div class="col-md-6 my-2">
+                    <button type="submit" class="btn btn-success btn-main w-100">Update this product <i class="fas fa-plus-circle"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+<script src="/js/clean-fields.js"></script>
+<%- include ('partials/final-part.html') %>
